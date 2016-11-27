@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>&lt;undefined&gt;</parentName>
+  <parentName>obj_parent_enemy</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -26,34 +26,19 @@
           <argument>
             <kind>1</kind>
             <string>///Initialisation
-spd = 0.5;
-hp = 3;
-grd = 8;
+event_inherited();
+hp = 4;
+damage = 2;
+timer = 0;
+state = "MOVE"
+face_direction = enum_facing.up;
+move_speed = 0.5;
+image_speed = 0.2;
 
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="2" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Move again
-speed += spd*2;
+vx = 0;
+vy = 0;
+cx = 0;
+cy = 0;
 </string>
           </argument>
         </arguments>
@@ -76,95 +61,68 @@ speed += spd*2;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Movement
-    if !collision_line(x, y, obj_player.x, obj_player.y, obj_wall, false, 0)
+            <string>///Moving
+event_inherited();
+
+switch(state)
+{
+    case "MOVE":
     {
-        mp_potential_step(obj_player.x, obj_player.y, spd, 1);
+        switch(face_direction)
+        {
+            case enum_facing.up:
+            {
+                vx = 0;
+                vy = -move_speed;
+                
+                break;
+            }
+            case enum_facing.down:
+            {
+                vx = 0;
+                vy = move_speed;
+                
+                break;
+            }
+            case enum_facing.left:
+            {
+                vx = -move_speed;
+                vy = 0;
+                
+                break;
+            }
+            case enum_facing.right:
+            {
+                vx = move_speed;
+                vy = 0;
+                
+                break;
+            }
+        }
+        if(irandom(100) &lt; 0.5) face_direction = choose(enum_facing.up, enum_facing.down, enum_facing.left, enum_facing.right);
+        break;
     }
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_wall">
-      <action>
-        <libid>1</libid>
-        <id>116</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_move_contact</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>direction</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>-1</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>0</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_sword">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Taking damage
-if hp &lt; 1
+}
+cx += vx;
+cy += vy;
+BufforVx = round(cx);
+BufforVy = round(cy);
+cx = vx - BufforVx;
+cy = vy - BufforVy;
+if(check_collision(BufforVx, BufforVy, obj_sword))
 {
     instance_destroy();
 }
+
+if(check_collision(BufforVx, BufforVy, obj_solid))
+{
+    face_direction = choose(enum_facing.up, enum_facing.down, enum_facing.left, enum_facing.right);
+}
 else
 {
-    hp --;
+    x += vx;
+    y += vy;
 }
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Knockback
-speed = -spd*2;
-alarm[0] = 30;
 </string>
           </argument>
         </arguments>

@@ -29,6 +29,7 @@
 down = false;
 left = false;
 right = false;
+attack = false;
 </string>
           </argument>
         </arguments>
@@ -51,10 +52,12 @@ right = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>right = keyboard_check(vk_right);
+            <string>attack = keyboard_check(vk_space);
+right = keyboard_check(vk_right);
 up = keyboard_check(vk_up);
 left = keyboard_check(vk_left);
 down = keyboard_check(vk_down);
+
 </string>
           </argument>
         </arguments>

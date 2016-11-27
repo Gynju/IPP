@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>scale = 2;
+            <string>///Initialisation
+init_game();
+scale = 2;
 window_set_size(window_get_width()*scale, window_get_height()*scale);
 instance_create(0,0,Input);
 </string>

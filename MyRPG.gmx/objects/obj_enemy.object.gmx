@@ -28,12 +28,13 @@
             <string>///Initialisation
 event_inherited();
 hp = 4;
-damage = 2;
+damage = 1;
 timer = 0;
 state = "MOVE"
 face_direction = enum_facing.up;
 move_speed = 0.5;
 image_speed = 0.2;
+
 
 vx = 0;
 vy = 0;
@@ -109,10 +110,6 @@ BufforVx = round(cx);
 BufforVy = round(cy);
 cx = vx - BufforVx;
 cy = vy - BufforVy;
-if(check_collision(BufforVx, BufforVy, obj_sword))
-{
-    instance_destroy();
-}
 
 if(check_collision(BufforVx, BufforVy, obj_solid))
 {

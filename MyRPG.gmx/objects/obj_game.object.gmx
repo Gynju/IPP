@@ -27,9 +27,118 @@
             <kind>1</kind>
             <string>///Initialisation
 init_game();
-scale = 2;
+
+state = "IN_LEVEL"
+menu_open = false;
+scale = 3;
 window_set_size(window_get_width()*scale, window_get_height()*scale);
+window_set_position(200,100);
 instance_create(0,0,Input);
+
+view_xview[0] = (obj_player.x div 256) * 256;
+view_yview[0] = (obj_player.y div 176) * 176;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Game
+switch(state)
+{
+    case "IN_LEVEL":
+    {
+        target_xview = (obj_player.x div 256) * 256;
+        target_yview = (obj_player.y div 176) * 176;
+        
+        view_xview[0] = move_toward(view_xview[0], target_xview, 5);
+        view_yview[0] = move_toward(view_yview[0], target_yview, 5);
+        if(Input.start)
+        {
+            state = "MENU_TRANS";
+        }
+        if(Input.select)
+        {
+            room_goto(rm_leveling);
+            state = "LEVELING";
+        }
+        break;
+    }
+    case "MENU_TRANS":
+    {
+        m_speed = 100;
+        hud_ht = 56;
+        level_ht = 176;
+        total_ht = hud_ht + level_ht;
+        if(!menu_open)
+        {
+          hud_y_tgt = 0;
+          hud_ht_tgt = total_ht;
+          lvl_y_tgt = total_ht;
+          lvl_ht_tgt  = 0;
+          if(view_hport[1] == total_ht)
+          {
+            menu_open = true;
+            state = "IN_MENU";
+          }
+        }
+        else
+        {
+            hud_y_tgt = level_ht;
+            hud_ht_tgt = hud_ht;
+            lvl_y_tgt = hud_ht;
+            lvl_ht_tgt  = level_ht;
+            if(view_hport[1] == hud_ht)
+          {
+            menu_open = false;
+            state = "IN_LEVEL";
+          }
+        }
+        
+        view_yview[1] = move_toward(view_yview[1], hud_y_tgt, m_speed);
+        view_hport[1] = move_toward(view_hport[1], hud_ht_tgt, m_speed);
+        view_hview[1] = move_toward(view_hview[1], hud_ht_tgt, m_speed);
+        
+        view_hview[0] = move_toward(view_hview[0], lvl_ht_tgt, m_speed);
+        view_yport[0] = move_toward(view_yport[0], lvl_y_tgt, m_speed);
+        view_hport[0] = total_ht - view_hport[1];
+    
+        break;
+    }
+    case "IN_MENU":
+    {
+        if(Input.start) state = "MENU_TRANS";
+        break;
+    }
+    
+    case "LEVELING":
+    {
+        target_xview = 0;
+        target_yview = 0;
+        break;
+    }
+}
+
+
+
+
 </string>
           </argument>
         </arguments>

@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -32,6 +32,12 @@ spd = 2;
 timer = 0;
 state = "IDLE"
 face_direction = 8; //8 up; 2 down; 4 left; 6 right
+experience = 0;
+
+iframes = 0;
+hp = 6;
+hearts = 3;
+max_hearts = 16;
 
 sprite_walk = spr_player_up;
 sprite_attack = spr_attack_up;
@@ -178,10 +184,108 @@ switch(state)
         break;
 }
 
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Invincibility
+if(iframes &gt; 0)
+{
+    iframes --;
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Collisions
 if(!check_collision(vx, vy, obj_solid))
 {
     x += vx;
     y += vy;
+}
+
+if(check_collision(vx, vy, obj_enemy))
+{
+    if(iframes == 0)
+    {
+        iframes = 30;
+        hp -= obj_enemy.damage;
+    }
+}
+
+if(check_collision(vx, vy, obj_heart))
+{
+    hp = clamp(hp+obj_heart.hp, 0, hearts*2);
+}
+
+if(check_collision(vx, vy, obj_container))
+{
+    hearts = clamp(hearts+1, 0, max_hearts);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Flashing when damaged
+if(iframes &gt; 0 &amp;&amp; iframes mod 3 == 0)
+{
+    
+}
+else
+{
+    draw_self();
 }
 </string>
           </argument>

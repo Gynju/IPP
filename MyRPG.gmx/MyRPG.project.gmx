@@ -4,7 +4,9 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\sound_world1</sound>
+  </sounds>
   <sprites name="sprites">
     <sprites name="player">
       <sprite>sprites\spr_player_up</sprite>
@@ -18,14 +20,25 @@
       <sprite>sprites\spr_sword</sprite>
       <sprite>sprites\spr_heart</sprite>
       <sprite>sprites\spr_container</sprite>
+      <sprite>sprites\spr_spike</sprite>
+      <sprite>sprites\spr_warp</sprite>
     </sprites>
     <sprites name="mask">
       <sprite>sprites\spr_wall_mask</sprite>
+      <sprite>sprites\spr_full_wall_mask</sprite>
+      <sprite>sprites\spr_quicksand_mask</sprite>
     </sprites>
     <sprites name="enemy">
-      <sprite>sprites\spr_enemy</sprite>
-      <sprite>sprites\spr_enemy_death</sprite>
-      <sprite>sprites\spr_enemy_spawn</sprite>
+      <sprites name="small enemies">
+        <sprite>sprites\spr_enemy_spawn</sprite>
+        <sprite>sprites\spr_enemy_death</sprite>
+        <sprite>sprites\spr_enemy</sprite>
+      </sprites>
+      <sprites name="bosses">
+        <sprite>sprites\spr_boss</sprite>
+        <sprite>sprites\spr_boss_spawn</sprite>
+        <sprite>sprites\spr_boss_death</sprite>
+      </sprites>
     </sprites>
     <sprites name="buttons">
       <sprite>sprites\spr_button</sprite>
@@ -36,6 +49,7 @@
     <background>background\bg_overworld</background>
     <background>background\bg_temp</background>
     <background>background\bg_temp_menu</background>
+    <background>background\bg_gameover</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -43,6 +57,15 @@
     <script>scripts\init_game.gml</script>
     <script>scripts\check_collision.gml</script>
     <script>scripts\move_toward.gml</script>
+    <scripts name="State Machine">
+      <script>scripts\state_init.gml</script>
+      <script>scripts\state_switch.gml</script>
+      <script>scripts\state_process.gml</script>
+    </scripts>
+    <scripts name="States">
+      <script>scripts\st_game_inLevel.gml</script>
+      <script>scripts\st_game_leveling.gml</script>
+    </scripts>
   </scripts>
   <fonts name="fonts">
     <font>fonts\fnt_button</font>
@@ -53,31 +76,46 @@
       <object>objects\obj_solid</object>
       <object>objects\obj_wall_top</object>
       <object>objects\obj_door</object>
+      <object>objects\obj_wall_full</object>
     </objects>
     <objects name="enemy">
-      <object>objects\obj_enemy</object>
-      <object>objects\obj_enemy_death</object>
-      <object>objects\obj_parent_enemy</object>
-      <object>objects\obj_enemy_spawn</object>
+      <objects name="small enemies">
+        <object>objects\obj_enemy_death</object>
+        <object>objects\obj_enemy_spawn</object>
+        <object>objects\obj_enemy</object>
+        <object>objects\obj_parent_enemy</object>
+      </objects>
+      <objects name="bosses">
+        <object>objects\obj_boss</object>
+        <object>objects\obj_boss_spawn</object>
+        <object>objects\obj_boss_death</object>
+      </objects>
     </objects>
     <objects name="buttons">
       <object>objects\obj_button</object>
     </objects>
     <objects name="items">
       <object>objects\obj_sword</object>
+      <object>objects\obj_spike</object>
       <object>objects\obj_container</object>
       <object>objects\obj_heart</object>
     </objects>
     <objects name="gameFiles">
-      <object>objects\obj_menu</object>
       <object>objects\obj_game</object>
+      <object>objects\obj_menu</object>
       <object>objects\Input</object>
+      <object>objects\obj_warp</object>
+    </objects>
+    <object>objects\obj_quicksand</object>
+    <objects name="music">
+      <object>objects\background_music_1</object>
     </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_game</room>
     <room>rooms\room1</room>
     <room>rooms\rm_leveling</room>
+    <room>rooms\rm_gameover</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

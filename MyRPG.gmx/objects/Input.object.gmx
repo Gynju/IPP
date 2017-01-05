@@ -54,13 +54,14 @@ select = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>attack = keyboard_check(vk_space);
+            <string>///Checking input
+attack = keyboard_check(vk_space);
 right = keyboard_check(vk_right);
 up = keyboard_check(vk_up);
 left = keyboard_check(vk_left);
 down = keyboard_check(vk_down);
-start = keyboard_check_pressed(vk_control);
-select = keyboard_check_pressed(vk_enter);
+start = keyboard_check(vk_control);
+select = keyboard_check_released(vk_enter);
 
 </string>
           </argument>

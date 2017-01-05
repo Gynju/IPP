@@ -28,6 +28,11 @@
             <string>///Initialisation
 vx = 0;
 vy = 0;
+
+automoving = false;
+tempVx = 0;
+tempVy = 0;
+
 spd = 2;
 timer = 0;
 state = "IDLE"
@@ -38,6 +43,9 @@ iframes = 0;
 hp = 6;
 hearts = 3;
 max_hearts = 16;
+
+canMove = true;
+on_quicksand = false;
 
 sprite_walk = spr_player_up;
 sprite_attack = spr_attack_up;
@@ -66,6 +74,15 @@ sprite_attack = spr_attack_up;
             <kind>1</kind>
             <string>///Movement
 animation_speed = 0.2;
+if(on_quicksand)
+{
+    spd = 1;
+}
+
+else
+{
+    spd = 2;  
+}
 switch(state)
 {
     case "ATTACK_START":
@@ -125,7 +142,7 @@ switch(state)
 
     case "IDLE":
         image_speed = 0;  
-        sprite_index = sprite_walk;  
+        sprite_index = sprite_walk;//sprite_walk;  
         vx = 0;
         vy = 0;
         check_input();
@@ -134,12 +151,17 @@ switch(state)
     case "RIGHT":
         face_direction = 6;
         image_speed = animation_speed;
-        sprite_walk = spr_player_side;
-        sprite_attack = spr_attack_side;
+        sprite_walk = spr_player_side;//spr_player_side;
+        sprite_attack = spr_attack_side;//spr_attack_side;
         sprite_index = sprite_walk;
         image_xscale = -1;
-        vx = 1*spd;
-        vy = 0;
+        if(canMove)
+        {
+            vx = 1*spd;
+            vy = 0;
+            tempVx = vx;
+            tempVy = vy;
+        }
 
         check_input();
         break;
@@ -147,12 +169,17 @@ switch(state)
     case "UP":
         face_direction = 8;
         image_speed = animation_speed;
-        sprite_walk = spr_player_up;
-        sprite_attack = spr_attack_up;
+        sprite_walk = spr_player_up;//spr_player_up;
+        sprite_attack = spr_attack_up;//spr_attack_up;
         sprite_index = sprite_walk;
         image_xscale = 1;
-        vx = 0;
-        vy = -1*spd;
+        if(canMove)
+        {
+            vx = 0;
+            vy = -1*spd;
+            tempVx = vx;
+            tempVy = vy;
+        }
 
         check_input();
         break;
@@ -160,12 +187,17 @@ switch(state)
     case "LEFT":
         face_direction = 4;
         image_speed = animation_speed;
-        sprite_walk = spr_player_side;
+        sprite_walk = spr_player_side;//spr_player_side;
         sprite_attack = spr_attack_side;
         sprite_index = sprite_walk;
         image_xscale = 1;
-        vx = -1*spd;
-        vy = 0;
+        if(canMove)
+        {
+            vx = -1*spd;
+            vy = 0;
+            tempVx = vx;
+            tempVy = vy;
+        }
 
         check_input();
         break;
@@ -173,12 +205,17 @@ switch(state)
     case "DOWN":
         face_direction = 2;
         image_speed = animation_speed;
-        sprite_walk = spr_player_down;
+        sprite_walk = spr_player_down;//spr_player_down;
         sprite_attack = spr_attack_down;
         sprite_index = sprite_walk;
         image_xscale = 1;
-        vx = 0;
-        vy = spd;
+        if(canMove)
+        {
+            vx = 0;
+            vy = spd;
+            tempVx = vx;
+            tempVy = vy;
+        }
 
         check_input();
         break;
@@ -234,9 +271,25 @@ if(iframes &gt; 0)
             <string>///Collisions
 if(!check_collision(vx, vy, obj_solid))
 {
-    x += vx;
-    y += vy;
+
+    if(check_collision(vx, vy, obj_door))
+    {
+        if(obj_door.colliding = false)
+        {
+            
+                x += vx;
+                y += vy;
+            
+        }
+    }
+    else
+    {
+            x += vx;
+            y += vy;
+    }
 }
+
+
 
 if(check_collision(vx, vy, obj_enemy))
 {
@@ -256,6 +309,107 @@ if(check_collision(vx, vy, obj_container))
 {
     hearts = clamp(hearts+1, 0, max_hearts);
 }
+
+if(check_collision(vx, vy, obj_quicksand))
+{
+    on_quicksand = true;
+}
+
+if(!check_collision(vx, vy, obj_quicksand))
+{
+    on_quicksand = false;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Checking health
+if(hp &lt;= 0)
+{
+    room_goto(rm_gameover);
+    obj_game.state = "GAME_OVER";
+    instance_destroy();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/*///Moving when reaching border
+if((x &lt;= ((x div 256) * 256) || x &gt;= ((x div 256) * 256)+256) || y &lt;= ((y div 176) * 176) || y &gt;= ((y div 176) * 2176)+176)
+{
+    automoving = true;
+    
+}
+if(x &lt;= 0-50 || x &gt;= 256+50 || y &lt;= 0-50 || y &gt;= 176+50)
+{
+    automoving = false;
+    canMove = true;
+}
+
+if(automoving)
+{
+    canMove = false;
+    x += tempVx;
+    y += tempVy;
+}
+*/
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="obj_warp">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>room_goto(other.destination);
+x = other.tgt_x;
+y = other.tgt_y;
 </string>
           </argument>
         </arguments>

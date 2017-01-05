@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>obj_parent_enemy</parentName>
+  <parentName>self</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -27,6 +27,7 @@
             <kind>1</kind>
             <string>///Initialisation
 event_inherited();
+iframes = 30;
 hp = 4;
 damage = 1;
 timer = 0;
@@ -40,6 +41,32 @@ vx = 0;
 vy = 0;
 cx = 0;
 cy = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///On death
+instance_create(x, y, obj_enemy_death);
+obj_player.experience += 10;
+
 </string>
           </argument>
         </arguments>
@@ -62,9 +89,38 @@ cy = 0;
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Checking health
+if(iframes &gt; 0)
+{
+    iframes --;
+}
+
+if(hp &lt;= 0)
+{
+    instance_destroy();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Moving
 event_inherited();
-
 switch(state)
 {
     case "MOVE":
@@ -111,14 +167,85 @@ BufforVy = round(cy);
 cx = vx - BufforVx;
 cy = vy - BufforVy;
 
-if(check_collision(BufforVx, BufforVy, obj_solid))
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Collisions
+if(!check_collision(vx, vy, obj_solid))
 {
-    face_direction = choose(enum_facing.up, enum_facing.down, enum_facing.left, enum_facing.right);
+    
+    if(check_collision(vx, vy, obj_door))
+    {
+        if(obj_door.colliding = false)
+        {
+            
+                x += vx;
+                y += vy;
+            
+        }
+        else
+        {
+            face_direction = choose(enum_facing.up, enum_facing.down, enum_facing.left, enum_facing.right);
+        }
+    }
+    else
+    {
+            x += vx;
+            y += vy;
+    }
 }
 else
 {
-    x += vx;
-    y += vy;
+    face_direction = choose(enum_facing.up, enum_facing.down, enum_facing.left, enum_facing.right);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Flickering on hit
+if(iframes &gt; 0 &amp;&amp; iframes mod 3 == 0)
+{
+    
+}
+else
+{
+    draw_self();
 }
 </string>
           </argument>

@@ -6,6 +6,11 @@
   <NewExtensions/>
   <sounds name="sound">
     <sound>sound\sound_world1</sound>
+    <sound>sound\sound_world2</sound>
+    <sound>sound\sound_world3</sound>
+    <sound>sound\sound_world4</sound>
+    <sound>sound\sound_menu</sound>
+    <sound>sound\sound_ending</sound>
   </sounds>
   <sprites name="sprites">
     <sprites name="player">
@@ -20,8 +25,16 @@
       <sprite>sprites\spr_sword</sprite>
       <sprite>sprites\spr_heart</sprite>
       <sprite>sprites\spr_container</sprite>
-      <sprite>sprites\spr_spike</sprite>
       <sprite>sprites\spr_warp</sprite>
+      <sprites name="hostile">
+        <sprite>sprites\spr_beam</sprite>
+        <sprite>sprites\spr_projectile</sprite>
+        <sprite>sprites\spr_spike</sprite>
+        <sprite>sprites\spr_splitter</sprite>
+        <sprite>sprites\spr_frag</sprite>
+        <sprite>sprites\spr_mine</sprite>
+      </sprites>
+      <sprite>sprites\explosion</sprite>
     </sprites>
     <sprites name="mask">
       <sprite>sprites\spr_wall_mask</sprite>
@@ -30,18 +43,48 @@
     </sprites>
     <sprites name="enemy">
       <sprites name="small enemies">
-        <sprite>sprites\spr_enemy_spawn</sprite>
-        <sprite>sprites\spr_enemy_death</sprite>
-        <sprite>sprites\spr_enemy</sprite>
+        <sprites name="world1">
+          <sprite>sprites\spr_enemy_spawn</sprite>
+          <sprite>sprites\spr_enemy_death</sprite>
+          <sprite>sprites\spr_enemy</sprite>
+        </sprites>
+        <sprites name="world2">
+          <sprite>sprites\spr_enemy2_death</sprite>
+          <sprite>sprites\spr_enemy2_spawn</sprite>
+          <sprite>sprites\spr_enemy2</sprite>
+        </sprites>
+        <sprites name="world3">
+          <sprite>sprites\spr_enemy3</sprite>
+          <sprite>sprites\spr_enemy3_spawn</sprite>
+          <sprite>sprites\spr_enemy3_death</sprite>
+        </sprites>
       </sprites>
       <sprites name="bosses">
-        <sprite>sprites\spr_boss</sprite>
-        <sprite>sprites\spr_boss_spawn</sprite>
-        <sprite>sprites\spr_boss_death</sprite>
+        <sprites name="world1">
+          <sprite>sprites\spr_boss</sprite>
+          <sprite>sprites\spr_boss_spawn</sprite>
+          <sprite>sprites\spr_boss_death</sprite>
+        </sprites>
+        <sprites name="world2">
+          <sprite>sprites\spr_boss2</sprite>
+          <sprite>sprites\spr_boss2_spawn</sprite>
+          <sprite>sprites\spr_boss2_death</sprite>
+        </sprites>
+        <sprites name="world3">
+          <sprite>sprites\spr_boss3</sprite>
+          <sprite>sprites\spr_boss3_spawn</sprite>
+          <sprite>sprites\spr_boss3_death</sprite>
+        </sprites>
+        <sprites name="world4">
+          <sprite>sprites\spr_boss4_death</sprite>
+          <sprite>sprites\spr_boss4_spawn</sprite>
+          <sprite>sprites\spr_boss4</sprite>
+        </sprites>
       </sprites>
     </sprites>
     <sprites name="buttons">
       <sprite>sprites\spr_button</sprite>
+      <sprite>sprites\spr_button_menu</sprite>
     </sprites>
     <sprite>sprites\spr_door</sprite>
   </sprites>
@@ -50,6 +93,7 @@
     <background>background\bg_temp</background>
     <background>background\bg_temp_menu</background>
     <background>background\bg_gameover</background>
+    <background>background\bg_world</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -59,16 +103,22 @@
     <script>scripts\move_toward.gml</script>
     <scripts name="State Machine">
       <script>scripts\state_init.gml</script>
-      <script>scripts\state_switch.gml</script>
       <script>scripts\state_process.gml</script>
+      <script>scripts\state_switch.gml</script>
     </scripts>
     <scripts name="States">
       <script>scripts\st_game_inLevel.gml</script>
       <script>scripts\st_game_leveling.gml</script>
+      <script>scripts\st_game_cheat.gml</script>
+      <script>scripts\st_game_end.gml</script>
+    </scripts>
+    <scripts name="automove">
+      <script>scripts\automove_x.gml</script>
+      <script>scripts\automove_y.gml</script>
     </scripts>
   </scripts>
   <fonts name="fonts">
-    <font>fonts\fnt_button</font>
+    <font>fonts\fnt_text</font>
   </fonts>
   <objects name="objects">
     <object>objects\obj_player</object>
@@ -79,43 +129,90 @@
       <object>objects\obj_wall_full</object>
     </objects>
     <objects name="enemy">
+      <object>objects\obj_parent_enemy</object>
       <objects name="small enemies">
-        <object>objects\obj_enemy_death</object>
-        <object>objects\obj_enemy_spawn</object>
-        <object>objects\obj_enemy</object>
-        <object>objects\obj_parent_enemy</object>
+        <objects name="world1">
+          <object>objects\obj_enemy</object>
+          <object>objects\obj_enemy_spawn</object>
+          <object>objects\obj_enemy_death</object>
+        </objects>
+        <objects name="world2">
+          <object>objects\obj_enemy2</object>
+          <object>objects\obj_enemy2_spawn</object>
+          <object>objects\obj_enemy2_death</object>
+        </objects>
+        <objects name="world3">
+          <object>objects\obj_enemy3</object>
+          <object>objects\obj_enemy3_spawn</object>
+          <object>objects\obj_enemy3_death</object>
+        </objects>
       </objects>
       <objects name="bosses">
-        <object>objects\obj_boss</object>
-        <object>objects\obj_boss_spawn</object>
-        <object>objects\obj_boss_death</object>
+        <objects name="world1">
+          <object>objects\obj_boss_spawn</object>
+          <object>objects\obj_boss_death</object>
+          <object>objects\obj_boss</object>
+        </objects>
+        <objects name="world2">
+          <object>objects\obj_boss2_spawn</object>
+          <object>objects\obj_boss2_death</object>
+          <object>objects\obj_boss2</object>
+        </objects>
+        <objects name="world3">
+          <object>objects\obj_boss3_spawn</object>
+          <object>objects\obj_boss3_death</object>
+          <object>objects\obj_boss3</object>
+        </objects>
+        <objects name="world4">
+          <object>objects\obj_boss4_spawn</object>
+          <object>objects\obj_boss4_death</object>
+          <object>objects\obj_boss4</object>
+        </objects>
       </objects>
     </objects>
     <objects name="buttons">
       <object>objects\obj_button</object>
+      <object>objects\obj_button_menu</object>
     </objects>
     <objects name="items">
       <object>objects\obj_sword</object>
-      <object>objects\obj_spike</object>
       <object>objects\obj_container</object>
       <object>objects\obj_heart</object>
+      <objects name="hostile">
+        <object>objects\obj_projectile</object>
+        <object>objects\obj_beam</object>
+        <object>objects\obj_spike</object>
+        <object>objects\obj_splitter</object>
+        <object>objects\obj_frag</object>
+        <object>objects\obj_mine</object>
+      </objects>
     </objects>
     <objects name="gameFiles">
       <object>objects\obj_game</object>
       <object>objects\obj_menu</object>
       <object>objects\Input</object>
       <object>objects\obj_warp</object>
+      <object>objects\obj_text</object>
+      <object>objects\obj_text_experience</object>
     </objects>
-    <object>objects\obj_quicksand</object>
     <objects name="music">
       <object>objects\background_music_1</object>
+      <object>objects\background_music_2</object>
+      <object>objects\background_music_3</object>
+      <object>objects\background_music_4</object>
     </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\rm_game</room>
-    <room>rooms\room1</room>
+    <room>rooms\rm_start</room>
+    <room>rooms\rm_world1</room>
+    <room>rooms\rm_world2</room>
+    <room>rooms\rm_world3</room>
+    <room>rooms\rm_world4</room>
     <room>rooms\rm_leveling</room>
     <room>rooms\rm_gameover</room>
+    <room>rooms\rm_ending</room>
+    <room>rooms\rm_cheat</room>
+    <room>rooms\TESTING</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

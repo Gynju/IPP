@@ -19,7 +19,7 @@
         <exetype>2</exetype>
         <functionname></functionname>
         <codestring></codestring>
-        <whoName>self</whoName>
+        <whoName>Input</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
@@ -32,6 +32,7 @@ right = false;
 attack = false;
 start = false;
 select = false;
+cheat = false;
 </string>
           </argument>
         </arguments>
@@ -62,6 +63,7 @@ left = keyboard_check(vk_left);
 down = keyboard_check(vk_down);
 start = keyboard_check(vk_control);
 select = keyboard_check_released(vk_enter);
+cheat = keyboard_check_released(vk_tab);
 
 </string>
           </argument>

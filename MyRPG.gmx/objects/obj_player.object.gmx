@@ -2,7 +2,7 @@
 <object>
   <spriteName>spr_player_up</spriteName>
   <solid>0</solid>
-  <visible>-1</visible>
+  <visible>0</visible>
   <depth>0</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
@@ -29,6 +29,14 @@
 vx = 0;
 vy = 0;
 
+last_vx = 0;
+last_vy = 0;
+
+damage = 2;
+
+previousLevel = 0;
+currentLevel = rm_world1;
+
 automoving = false;
 tempVx = 0;
 tempVy = 0;
@@ -45,7 +53,6 @@ hearts = 3;
 max_hearts = 16;
 
 canMove = true;
-on_quicksand = false;
 
 sprite_walk = spr_player_up;
 sprite_attack = spr_attack_up;
@@ -74,15 +81,6 @@ sprite_attack = spr_attack_up;
             <kind>1</kind>
             <string>///Movement
 animation_speed = 0.2;
-if(on_quicksand)
-{
-    spd = 1;
-}
-
-else
-{
-    spd = 2;  
-}
 switch(state)
 {
     case "ATTACK_START":
@@ -159,6 +157,8 @@ switch(state)
         {
             vx = 1*spd;
             vy = 0;
+            last_vx = vx;
+            last_vy = vy;
             tempVx = vx;
             tempVy = vy;
         }
@@ -177,6 +177,8 @@ switch(state)
         {
             vx = 0;
             vy = -1*spd;
+            last_vx = vx;
+            last_vy = vy;
             tempVx = vx;
             tempVy = vy;
         }
@@ -195,6 +197,8 @@ switch(state)
         {
             vx = -1*spd;
             vy = 0;
+            last_vx = vx;
+            last_vy = vy;
             tempVx = vx;
             tempVy = vy;
         }
@@ -213,10 +217,11 @@ switch(state)
         {
             vx = 0;
             vy = spd;
+            last_vx = vx;
+            last_vy = vy;
             tempVx = vx;
             tempVy = vy;
         }
-
         check_input();
         break;
 }
@@ -288,9 +293,6 @@ if(!check_collision(vx, vy, obj_solid))
             y += vy;
     }
 }
-
-
-
 if(check_collision(vx, vy, obj_enemy))
 {
     if(iframes == 0)
@@ -304,21 +306,6 @@ if(check_collision(vx, vy, obj_heart))
 {
     hp = clamp(hp+obj_heart.hp, 0, hearts*2);
 }
-
-if(check_collision(vx, vy, obj_container))
-{
-    hearts = clamp(hearts+1, 0, max_hearts);
-}
-
-if(check_collision(vx, vy, obj_quicksand))
-{
-    on_quicksand = true;
-}
-
-if(!check_collision(vx, vy, obj_quicksand))
-{
-    on_quicksand = false;
-}
 </string>
           </argument>
         </arguments>
@@ -339,34 +326,8 @@ if(!check_collision(vx, vy, obj_quicksand))
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Checking health
-if(hp &lt;= 0)
-{
-    room_goto(rm_gameover);
-    obj_game.state = "GAME_OVER";
-    instance_destroy();
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>/*///Moving when reaching border
+            <string>///Testing - when reaching border
+/*///Moving when reaching border
 if((x &lt;= ((x div 256) * 256) || x &gt;= ((x div 256) * 256)+256) || y &lt;= ((y div 176) * 176) || y &gt;= ((y div 176) * 2176)+176)
 {
     automoving = true;
@@ -389,6 +350,60 @@ if(automoving)
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Upper limit for health
+if(hp &gt; 32)
+{
+    hp = 32;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Checking HP
+if(hp &lt;= 0)
+{
+    with(obj_game)
+    {
+        state_switch(st_game_end);
+    }
+    instance_destroy();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="4" ename="obj_warp">
       <action>
@@ -407,9 +422,19 @@ if(automoving)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>room_goto(other.destination);
+            <string>///Warp on collision
+
+global.warping = true;
+
+audio_stop_all();
+
 x = other.tgt_x;
 y = other.tgt_y;
+
+room_goto(other.destination);
+currentLevel = other.destination;
+audio_play_sound(other.music, 1, true);
+
 </string>
           </argument>
         </arguments>

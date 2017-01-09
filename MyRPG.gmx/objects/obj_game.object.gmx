@@ -29,10 +29,12 @@
 init_game();
 state_init();
 
-//state = "IN_LEVEL"
-
+sound_global_volume(0.5);
+audio_play_sound(sound_menu, 1, true);
 
 scale = 3;
+global.warping = false;
+automoving = false;
 window_set_size(window_get_width()*scale, window_get_height()*scale);
 window_set_position(200,100);
 instance_create(0,0,Input);
@@ -63,34 +65,7 @@ view_yview[0] = (obj_player.y div 176) * 176;
           <argument>
             <kind>1</kind>
             <string>///Game
-state_process(st_game_inLevel);
-/*switch(state)
-{
-    case "IN_LEVEL":
-    {
-        target_xview = (obj_player.x div 256) * 256;
-        target_yview = (obj_player.y div 176) * 176;
-        
-        view_xview[0] = move_toward(view_xview[0], target_xview, 5);
-        view_yview[0] = move_toward(view_yview[0], target_yview, 5);
-        if(Input.select)
-        {
-            obj_player.visible = false;
-            room_goto(rm_leveling);
-            state = "LEVELING";
-        }
-        break;
-    }
-    case "LEVELING":
-    {
-        target_xview = 0;
-        target_yview = 0;
-        break;
-    }
-}
-*/
-
-
+state_process(state);
 
 </string>
           </argument>

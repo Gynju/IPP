@@ -113,8 +113,7 @@
       <script>scripts\st_game_end.gml</script>
     </scripts>
     <scripts name="automove">
-      <script>scripts\automove_x.gml</script>
-      <script>scripts\automove_y.gml</script>
+      <script>scripts\automove.gml</script>
     </scripts>
   </scripts>
   <fonts name="fonts">

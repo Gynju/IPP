@@ -32,6 +32,7 @@ state_init();
 sound_global_volume(0.5);
 audio_play_sound(sound_menu, 1, true);
 
+move_timer = 0;
 scale = 3;
 global.warping = false;
 automoving = false;

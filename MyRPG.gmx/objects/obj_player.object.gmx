@@ -37,7 +37,6 @@ damage = 2;
 previousLevel = 0;
 currentLevel = rm_world1;
 
-automoving = false;
 tempVx = 0;
 tempVy = 0;
 
@@ -157,8 +156,6 @@ switch(state)
         {
             vx = 1*spd;
             vy = 0;
-            last_vx = vx;
-            last_vy = vy;
             tempVx = vx;
             tempVy = vy;
         }
@@ -177,8 +174,6 @@ switch(state)
         {
             vx = 0;
             vy = -1*spd;
-            last_vx = vx;
-            last_vy = vy;
             tempVx = vx;
             tempVy = vy;
         }
@@ -197,8 +192,6 @@ switch(state)
         {
             vx = -1*spd;
             vy = 0;
-            last_vx = vx;
-            last_vy = vy;
             tempVx = vx;
             tempVy = vy;
         }
@@ -217,8 +210,6 @@ switch(state)
         {
             vx = 0;
             vy = spd;
-            last_vx = vx;
-            last_vy = vy;
             tempVx = vx;
             tempVy = vy;
         }
@@ -281,16 +272,21 @@ if(!check_collision(vx, vy, obj_solid))
     {
         if(obj_door.colliding = false)
         {
-            
+            if(canMove)
+            {
                 x += vx;
                 y += vy;
+            }
             
         }
     }
     else
     {
+        if(canMove)
+        {
             x += vx;
             y += vy;
+        }
     }
 }
 if(check_collision(vx, vy, obj_enemy))

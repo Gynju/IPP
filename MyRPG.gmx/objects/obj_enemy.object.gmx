@@ -27,8 +27,9 @@
             <kind>1</kind>
             <string>///Initialisation
 event_inherited();
+attacked = false;
 iframes = 30;
-hp = 4;
+hp = 99999999999;
 damage = 1;
 timer = 0;
 state = "MOVE"
@@ -129,28 +130,58 @@ switch(state)
         {
             case enum_facing.up:
             {
+                if(attacked == true)
+                {
+                    vy = move_speed;
+                }
+                else
+                {
+                    vy = -move_speed;
+                }
                 vx = 0;
-                vy = -move_speed;
+                
                 
                 break;
             }
             case enum_facing.down:
             {
                 vx = 0;
-                vy = move_speed;
+                if(attacked == true)
+                {
+                    vy = -move_speed;
+                }
+                else
+                {
+                    vy = move_speed;
+                }
                 
                 break;
             }
             case enum_facing.left:
             {
-                vx = -move_speed;
+                if(attacked == true)
+                {
+                    vx = move_speed;
+                }
+                else
+                {
+                    vx = -move_speed;
+                }
+                
                 vy = 0;
                 
                 break;
             }
             case enum_facing.right:
             {
-                vx = move_speed;
+                if(attacked == true)
+                {
+                    vx = -move_speed;
+                }
+                else
+                {
+                    vx = move_speed;
+                }
                 vy = 0;
                 
                 break;
@@ -217,28 +248,6 @@ else
     face_direction = choose(enum_facing.up, enum_facing.down, enum_facing.left, enum_facing.right);
 }
 </string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_sword">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string></string>
           </argument>
         </arguments>
       </action>

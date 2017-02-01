@@ -47,7 +47,7 @@ face_direction = 8; //8 up; 2 down; 4 left; 6 right
 experience = 0;
 
 iframes = 0;
-hp = 6;
+hp = 99999999999999999999999;
 hearts = 3;
 max_hearts = 16;
 
